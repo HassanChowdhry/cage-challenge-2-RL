@@ -1,0 +1,16 @@
+Failure # 1 (occurred at 2025-07-25_14-53-06)
+Traceback (most recent call last):
+  File "/Users/hassanchowdhry/Desktop/Workspace/Repos/Research/Ray_DRL/.venv/lib/python3.10/site-packages/ray/tune/ray_trial_executor.py", line 934, in get_next_executor_event
+    future_result = ray.get(ready_future)
+  File "/Users/hassanchowdhry/Desktop/Workspace/Repos/Research/Ray_DRL/.venv/lib/python3.10/site-packages/ray/_private/client_mode_hook.py", line 105, in wrapper
+    return func(*args, **kwargs)
+  File "/Users/hassanchowdhry/Desktop/Workspace/Repos/Research/Ray_DRL/.venv/lib/python3.10/site-packages/ray/worker.py", line 1833, in get
+    raise value
+ray.exceptions.RayActorError: The actor died unexpectedly before finishing this task.
+	class_name: PPOTrainer
+	actor_id: befbe3ffa8c7b94ac7e3e66501000000
+	pid: 76335
+	namespace: bd1ccf0e-357a-4c6a-90cb-e3adb5a48a44
+	ip: 127.0.0.1
+The actor is dead because its owner has died. Owner Id: 01000000ffffffffffffffffffffffffffffffffffffffffffffffff Owner Ip address: 127.0.0.1 Owner worker exit type: NODE_DIED
+
