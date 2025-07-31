@@ -8,7 +8,7 @@ charset-normalizer==3.4.2
 click==8.0.4
 cloudpickle==3.1.1
 cryptography==45.0.5
-cyborg @ file:///Users/hassanchowdhry/Desktop/Workspace/Repos/Research/cage-challenge-2-public/cage-challenge-2/CybORG
+cyborg @ file:///users/cs/chowdhry/Workspace/cage-challenge-2/CybORG
 cycler==0.12.1
 distlib==0.4.0
 dm-tree==0.1.9
