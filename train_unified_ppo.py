@@ -22,9 +22,9 @@ ppo_config.update({
         "fcnet_hiddens": [256, 256, 256, 52],      # two hidden layers of size 256
         "fcnet_activation": "relu",
         "use_lstm": False,
-	"use_attention": False,
-	"lstm_use_prev_action": True,
-	"lstm_use_prev_reward": True,
+        "use_attention": False,
+        "lstm_use_prev_action": True,
+        "lstm_use_prev_reward": True,
     },
     "lr": 5e-4,                    # learning rate (could tune; Mindrake used 5e-4 for B-Line
     "gamma": 0.99,

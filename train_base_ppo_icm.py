@@ -1,4 +1,4 @@
-import ray, inspect, gym
+import ray, inspect, gym, torch
 from CybORG import CybORG
 from CybORG.Agents.Wrappers import ChallengeWrapper
 from CybORG.Agents import RedMeanderAgent, B_lineAgent 
@@ -18,42 +18,56 @@ register_env("CybORG-base", lambda config: create_env(config))
 ppo_icm_config = ppo.DEFAULT_CONFIG.copy()
 ppo_icm_config.update({
     "env": "CybORG-base",    # our unified env with random attackers
-    "num_workers": 0,       # MUST be 0 for Curiosity exploration to avoid parallelism issues
+    "num_workers": 0,       # MUST be 0 for Curiosity exploration to avoid parallelism
+    "num_gpus": 1,
     "horizon": 100,
     "framework": "torch",
     "model": {
-        "fcnet_hiddens": [256, 256],
+        "fcnet_hiddens": [256, 256, 256],
         "fcnet_activation": "relu",
+        "vf_share_layers": False,
     },
+    
     "lr": 5e-4,
     "gamma": 0.99,
     "entropy_coeff": 0.001,
+    "vf_loss_coeff": 1,  # Scales down the value function loss for better comvergence with PPO
+    "clip_param": 0.5,
+    "vf_clip_param": 5.0,
+    
     "exploration_config": {
         "type": Curiosity,            # use our ICM class
         "framework": "torch",         # ensure torch (the Curiosity class uses torch ops)
         "eta": 1.0,                   # intrinsic reward scale
         "beta": 0.2,                  # forward loss weight
         "lr": 0.001,                  # ICM optimizer learning rate
-        "feature_dim": 52,            # dimensionality of state embedding (choose 52 to match obs space)
+        "feature_dim": 53,            # dimensionality of state embedding (choose 52 to match obs space)
         "feature_net_config": {       # feature extractor network config
-            "fcnet_hiddens": [], 
+            "fcnet_hiddens": [256], 
             "fcnet_activation": "relu",
             "framework": "torch",
         },
-        "inverse_net_hiddens": [256],   # one hidden layer in inverse model
+        "inverse_net_hiddens": [256, 256],   # one hidden layer in inverse model
         "inverse_net_activation": "relu",
-        "forward_net_hiddens": [256],   # one hidden layer in forward model
+        "forward_net_hiddens": [256, 256],   # one hidden layer in forward model
         "forward_net_activation": "relu",
         "sub_exploration": { "type": "StochasticSampling" }  # default exploration (policy sampling)
     }
 })
 
 if __name__ == "__main__":
-    ray.init()
+    ray.init(
+        num_gpus=1,
+        local_mode=False,
+    )
+    print("torch.cuda.is_available()", torch.cuda.is_available())
+    torch.device(str("cuda:0"))
+
     stop = {
-        "training_iteration": 10000000,   # The number of times tune.report() has been called
-        "timesteps_total": 100000000,   # Total number of timesteps
-        "episode_reward_mean": -0.1,
+        "training_iteration": 10_000_000,   # The number of times tune.report() has been called
+        "timesteps_total": 100_000_000,   # Total number of timesteps
+	    #"timesteps_total": 100,
+	    "episode_reward_mean": -0.1,
     }
     
     algo = ppo.PPOTrainer
