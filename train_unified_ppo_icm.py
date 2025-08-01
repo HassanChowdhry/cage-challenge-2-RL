@@ -16,7 +16,7 @@ ppo_icm_config.update({
     "horizon": 100,
     "framework": "torch",
     "model": {
-        "fcnet_hiddens": [256, 256],
+        "fcnet_hiddens": [256, 256, 256],
         "fcnet_activation": "relu",
         "vf_share_layers": False,
     },
@@ -36,7 +36,7 @@ ppo_icm_config.update({
         "lr": 0.001,                  # ICM optimizer learning rate
         "feature_dim": 53,            # dimensionality of state embedding (choose 52 to match obs space)
         "feature_net_config": {       # feature extractor network config
-            "fcnet_hiddens": [], 
+            "fcnet_hiddens": [256], 
             "fcnet_activation": "relu",
             "framework": "torch",
         },

@@ -45,8 +45,8 @@ if __name__ == "__main__":
     stop = {
         "training_iteration": 10_000_000,   # The number of times tune.report() has been called
         "timesteps_total": 100_000_000,   # Total number of timesteps
-	#"timesteps_total": 100,
-	"episode_reward_mean": -0.1,
+	    #"timesteps_total": 100,
+	    "episode_reward_mean": -0.1,
     }
 
     algo = ppo.PPOTrainer
