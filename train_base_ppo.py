@@ -68,7 +68,7 @@ if __name__ == "__main__":
         checkpoint_score_attr="episode_reward_mean",
     )
     
-    checkpoint_pointer = open("checkpoint_pointer.txt", "w")
+    checkpoint_pointer = open("checkpoint_pointer_b_ppo.txt", "w")
     last_checkpoint = results.get_last_checkpoint(
         metric="episode_reward_mean", mode="max"
     )
